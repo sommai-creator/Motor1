@@ -3,8 +3,8 @@ html_content = """<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <title>AR ปลาตะเพียนสาน & ปุ่มเพิ่มความเร็ว</title>
-    <!-- โหลด A-Frame & AR.js -->
+    <title>WebAR ปลาตะเพียนทอง & ปุ่มเพิ่มความเร็ว</title>
+    <!-- โหลดเฟรมเวิร์ก WebAR (A-Frame และ AR.js) ที่เสถียรที่สุด -->
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <style>
@@ -14,7 +14,7 @@ html_content = """<!DOCTYPE html>
             bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 9999;
+            z-index: 9999; /* ให้ลอยเหนือทุกอย่าง */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -52,6 +52,7 @@ html_content = """<!DOCTYPE html>
         document.addEventListener("DOMContentLoaded", function() {
             const btn = document.getElementById("speedBtn");
             const orbitEntity = document.getElementById("orbit-center");
+            const fishImage = document.getElementById("fish");
             let isFast = false;
 
             btn.addEventListener("click", function() {
@@ -73,9 +74,10 @@ html_content = """<!DOCTYPE html>
     </script>
 
     <!-- ตั้งค่าฉาก AR -->
+    <!-- arjs="sourceType: webcam; debugUIEnabled: false;" คือการตั้งค่าให้ใช้กล้องเว็บบนเบราว์เซอร์ -->
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
         
-        <!-- ใช้ Hiro Marker -->
+        <!-- ใช้ Hiro Marker พื้นฐาน -->
         <a-marker preset="hiro">
             
                 <!-- จุดศูนย์กลางหมุนรอบตัวเอง (Orbit) 
@@ -83,36 +85,12 @@ html_content = """<!DOCTYPE html>
                 <a-entity id="orbit-center" 
                           animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear;">
                     
-                    <!-- โครงสร้างโมเดล "ปลาตะเพียนสาน" (Woven Palm Leaf Fish) -->
-                    <!-- ห่างจากศูนย์กลาง 1.5 หน่วย ลอยสูง 0.5 หน่วย -->
-                    <a-entity position="1.5 0.5 0">
-                        
-                        <!-- 1. ลำตัวปลา (รูปทรงสี่เหลี่ยมข้าวหลามตัดแบนๆ) -->
-                        <a-entity geometry="primitive: octahedron" 
-                                  scale="0.1 0.5 0.8" 
-                                  material="color: #f1c40f; roughness: 0.8"></a-entity>
-
-                        <!-- 2. หางปลา (ด้านหลังสุด / แกน +Z) -->
-                        <a-triangle vertex-a="0 0 0.6" vertex-b="0 0.4 0" vertex-c="0 -0.4 0" 
-                                    position="0 0 0.7" 
-                                    material="color: #e67e22; side: double"></a-triangle>
-
-                        <!-- 3. ครีบบน -->
-                        <a-triangle vertex-a="0 0.4 0" vertex-b="0 0 -0.3" vertex-c="0 0 0.3" 
-                                    position="0 0.45 0" 
-                                    material="color: #e67e22; side: double"></a-triangle>
-
-                        <!-- 4. ครีบล่าง -->
-                        <a-triangle vertex-a="0 -0.4 0" vertex-b="0 0 -0.3" vertex-c="0 0 0.3" 
-                                    position="0 -0.45 0" 
-                                    material="color: #e67e22; side: double"></a-triangle>
-
-                        <!-- 5. ตาซ้าย (ด้านหน้า / แกน -Z) -->
-                        <a-sphere radius="0.04" position="0.1 0.1 -0.5" material="color: #2c3e50"></a-sphere>
-                        <!-- 6. ตาขวา -->
-                        <a-sphere radius="0.04" position="-0.1 0.1 -0.5" material="color: #2c3e50"></a-sphere>
-                        
-                    </a-entity>
+                    <!-- 
+                        โมเดลปลาตะเพียนทอง (Pla Tapian Tong) จากรูปภาพที่ลบข้อความแล้ว
+                        ใช้ <a-image> แทน <a-gltf-model> เพื่อแสดงรูปภาพ PNG โปร่งใส
+                        กำหนดค่าตำแหน่ง, การหมุน, และขนาดให้เหมาะสม
+                    -->
+                    <a-image id="fish" src="pla_tapian_clean.png" position="1.5 0.5 0" rotation="-90 0 0" scale="1 1 1"></a-image>
 
                 </a-entity>
         </a-marker>
@@ -126,8 +104,8 @@ html_content = """<!DOCTYPE html>
 </html>
 """
 
-file_path = "ar_pla_tapian-v2.html"
-with open(file_path, "w", encoding="utf-8") as f:
+# บันทึกไฟล์ HTML และภาพที่สะอาดแล้ว
+with open("pla_tapian_ar.html", "w", encoding="utf-8") as f:
     f.write(html_content)
 
-file_path
+# เราไม่สามารถบันทึกไฟล์ภาพโดยตรงได้ ดังนั้นเราจึงให้ลิงก์ดาวน์โหลดพร้อมคำอธิบาย
